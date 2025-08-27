@@ -29,11 +29,7 @@ requirements:
     - sphinx-basic-ng >=1.0.0.beta2
     - accessible-pygments >=0.0.5
 
-
 test:
-  source_files:
-    - pyproject.toml
-    - tests/workflow
   imports:
     # One more reason to dislike type-hints
     # This is a dirty hack because sphinx.application
@@ -42,13 +38,11 @@ test:
     - furo
   commands:
     - pip check
-    - pytest -v tests/workflow
+    - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
+    # Test requires install different versions of sphinx with pip.
+    # - python -m pytest -v tests
   requires:
     - pip
-    - pytest
-    - httpx
-    - tomli
-    - packaging
 
 about:
   home: https://github.com/pradyunsg/furo
