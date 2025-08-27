@@ -19,7 +19,7 @@ requirements:
     - pip
     - python
     - sphinx-theme-builder >=0.2.0a10
-    - nodejs >=16.15.1
+    - nodejs >=18.20.5
     - flit-core >=2,<4
   run:
     - beautifulsoup4
