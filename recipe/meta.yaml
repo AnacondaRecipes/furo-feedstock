@@ -1,38 +1,33 @@
 {% set name = "furo" %}
-{% set version = "2022.12.7" %}
-
+{% set version = "2025.7.19" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/furo-{{ version }}.tar.gz
-  sha256: d8008f8efbe7587a97ba533c8b2df1f9c21ee9b3e5cad0d27f61193d38b1a986
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/furo-{{ version }}.tar.gz
+  sha256: 4164b2cafcf4023a59bb3c594e935e2516f6b9d35e9a5ea83d8f6b43808fe91f
 
 build:
   number: 0
-  noarch: python
-  script: {{ PYTHON }} -m pip install . -vv
-  script_env:
-    - STB_USE_SYSTEM_NODE=1
-
+  skip: True #[py<38]
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+    
 requirements:
   host:
-    - flit-core >=2,<4
     - pip
-    - python >=3.6
-    - sphinx-theme-builder
-    - nodejs ==16.15.1
+    - python
+    - sphinx-theme-builder >=0.2.0a10
+    - nodejs >=18.20.5
+    - flit-core >=2,<4
   run:
     - beautifulsoup4
-    - myst-parser
     - pygments >=2.7
-    - python >=3.6
-    - sphinx >=4
-    - sphinx-inline-tabs
-    - sphinx-basic-ng
-
+    - python
+    - sphinx >=6.0,<9.0
+    - sphinx-basic-ng >=1.0.0.beta2
+    - accessible-pygments >=0.0.5
 
 test:
   imports:
@@ -43,14 +38,24 @@ test:
     - furo
   commands:
     - pip check
+    - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
+    # Test requires install different versions of sphinx with pip.
+    # - python -m pytest -v tests
   requires:
     - pip
 
 about:
   home: https://github.com/pradyunsg/furo
   summary: A clean customisable Sphinx documentation theme.
+  description: |
+    Intentionally minimal — the most important thing is the content, not the scaffolding around it.
+    Responsive — adapting perfectly to the available screen space, to work on all sorts of devices.
+    Customisable — change the color palette, font families, logo and more!
   license: MIT
+  license_family: MIT
   license_file: LICENSE
+  dev_url: https://github.com/pradyunsg/furo
+  doc_url: https://pradyunsg.me/furo
 
 extra:
   recipe-maintainers:
